@@ -1,0 +1,18 @@
+body {
+    margin: 0;
+}
+
+.container{
+    width: 1349px;
+    height: 100px;
+    text-align: center;
+}
+
+.container .picker{
+    border-radius: 50px;
+    display: table-cell;
+    height: inherit;
+    width: inherit;
+    vertical-align: middle;
+    cursor: pointer;
+}

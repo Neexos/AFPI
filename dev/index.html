@@ -3,37 +3,24 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="./css/colorPick.min.css">
+        <link rel="stylesheet" href="./css/perso.css">
         <title>BLOKUS</title>
     </head>
-    <style>
-        .picker{
-            border-radius: 50px;
-            width: 200px;
-            height: 200px;
-            cursor: pointer;
-            border: thin solid #000;
-            text-align: center;
-            
-        }
-    </style>
     <body>
-        <p>Tour du joueur : </p>
 
-            
         <!-- P5 -->
-
         <script src="./js/p5.min.js"></script>
-
         <script src="js/jquery-3.4.1.min.js"></script> 
-
         <script src="./js/colorPick.min.js"></script>
-
         <script src="./js/sketch.js"></script>
 
-        <div class="container">
-                <div class="picker">Choisissez votre couleur: </div>
-            </div>
-            
+        <div class="container" id="container">
+            <div class="picker" id="J1">JOUEUR 1</div>
+            <div class="picker" id="J2">JOUEUR 2</div>
+            <div class="picker" id="J3">JOUEUR 3</div>
+            <div class="picker" id="J4">JOUEUR 4</div>
+        </div>
+        <input class="container" id="container" type="submit" value="valider" onclick=couleurChoisie()>
         </body>
 
 </html>

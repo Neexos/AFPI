@@ -1,9 +1,9 @@
 class Piece {
 
-    constructor(color) {
+    constructor(color, nbSquare, id) {
         this.couleur = color;
-        this.rotation = [];
-        this.state = false; //état posé ou non
+        this.nbSquare = nbSquare;
+        this.id = id;
     }
 
     show(){
@@ -11,8 +11,8 @@ class Piece {
         stroke();
     }
 
-    create(num){
-        switch (num) {
+    create(nbSquare){
+        switch (nbSquare) {
             case 1:
                 
                 break;
@@ -26,70 +26,23 @@ class Piece {
 
                 break;
             case 5:
-                
+                                
                 break;
-            case 6:
 
-                break;
-            case 7:
-                
-                break;
-            case 8:
-
-                break;
-            case 9:
-                
-                break;
-            case 10:
-
-                break;
-            case 11:
-                
-                break;
-            case 12:
-
-                break;
-            case 13:
-                
-                break;
-            case 14:
-
-                break;
-            case 15:
-                
-                break;
-            case 16:
-
-                break;
-            case 17:
-                
-                break;
-            case 18:
-
-                break;
-            case 19:
-                
-                break;
-            case 20:
-
-                break;
-            case 21:
-
-                break;
             default:
                 break;
         }
     }
 
-    select(){
+    select(id){
         
     }
 
-    rotate(sens){
+    rotate(sens, id){
 
     }
 
-    place(pos){
+    place(pos, id){
         
     }
 }
