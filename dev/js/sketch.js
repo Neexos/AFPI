@@ -54,6 +54,7 @@ function setup(){
 function draw(){
     if(nbPlayer != 2 && nbPlayer != 4){ //check du nombre de joueurs, influe sur le plateau et les couleurs
         nbPlayer = floor(Number(window.prompt("Entrez le nombre de joueurs (2 ou 4)", 2)));
+        window.alert("Selectionnez votre couleur pour chaque joueur puis validez");
     }else if(nbPlayer == 2){
         $("#J3").remove(); // Si 2 joueurs,
         $("#J4").remove(); // joueur3 et joueur4 sont supprimé
@@ -73,11 +74,11 @@ function draw(){
         }
         fill(colorPlayer1);
         square(0,(col-1)*w,w);
-        fill(255);
-        line(0, (col-1)+w, (col-1)*w, w);
+        line(0, (col-1)*w, w, col*w);
         fill(colorPlayer2);
         square((col-1)*w,0,w);
-        
+        line((col-1)*w, 0, col*w, w);
+
     }else{
         stroke(0);
         noFill();
@@ -117,10 +118,10 @@ function tableau2D(rows, cols){
     }
     return arr;
 }
-// TODO : Problème de remove de container (il faut appuyer 2 fois) 
 function couleurChoisie(){
     $("#J1").remove();
     $("#J2").remove();
     $("#J3").remove();
     $("#container").remove();
+    $("#container").remove(); //Doublon pour régler le problème de suppression de div
 }
