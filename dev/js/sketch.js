@@ -157,6 +157,7 @@ function preload(){
 function setup(){
     createCanvas(1349,boardSize);
     background(200,200,200);
+    initPieces(BFM);
     $("#J1").colorPick({
        'initialColor': '#ff0000',
        'onColorSelected':function(){
@@ -216,7 +217,6 @@ function draw(){
         square((col-1)*w,0,w);
         line((col-1)*w, 0, col*w, w);
 
-        initPieces(BFM);
     }else{
         stroke(0);
         noFill();
@@ -244,7 +244,6 @@ function draw(){
         square((col-1)*w,(col-1)*w,w);
         line((col-1)*w, (col-1)*w, col*w, col*w);
 
-        initPieces(BFM);
     }
 }
 
@@ -267,6 +266,7 @@ function couleurChoisie(){
     $("#container").remove();
     $("#container").remove(); //Doublon pour régler le problème de suppression de div
     colorOkay = true; //Tant que colorOkay est false, le jeu ne commence pas
+    initPieces(BFM);
 }
 
 //empeche d'avoir 2 fois la meme couleur #### NON UTILISE POUR L'INSTANT ####
@@ -295,8 +295,7 @@ function matrixAddition(a, b) {
 //initialise l'affichage de toutes les pièces
 function initPieces(matrice){
     translate(boardSize,0);
-    fill(255,200,200);
-    let ret = w*delta;
+    let dim = w*delta;
     for(x=0;x<matrice.length;x++){
         push();
         for(y=0; y<matrice[x].length; y++){
@@ -305,21 +304,21 @@ function initPieces(matrice){
                 if(matrice[x][y][z]){
                     fill(255);
                     stroke(0);
-                    square(0, 0, ret);
+                    square(0, 0, dim);
                 }/*else{
                     fill(255,0,0);
-                    square(0,0,ret);
+                    square(0,0,dim);
                 }*/
-                translate(ret,0);
+                translate(dim,0);
             }
             pop();
-            translate(0,ret);
+            translate(0,dim);
         }
         pop();
         if(x == 3 || x == 7 || x == 11 || x == 15 || x == 19){
-            translate(-20*ret,5*ret);
+            translate(-20*dim,5*dim);
         }
-        translate(5*ret,0);
+        translate(5*dim,0);
     }    
 
 }
