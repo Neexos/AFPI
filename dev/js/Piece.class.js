@@ -38,8 +38,21 @@ class Piece {
         
     }
 
-    rotate(sens, id){
+    rotation(sens, matrice, id){
+        let tmp = matrice;
+        if(sens == "droite"){
+            matrice.forEach(element => {
 
+            });
+        }else{
+
+        }
+    }
+
+    flip(matrice){
+        matrice.forEach(element => {
+            return reverse(element);
+        });
     }
 
     place(pos, id){
