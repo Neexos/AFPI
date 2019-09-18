@@ -4,7 +4,7 @@ let col = 20;
 let row = 20;
 let boardSize = 650;
 let w;
-let delta = 0.65;
+let delta = 0.8;
 
 let nbPlayer = 0;
 let colorPlayer1;
@@ -13,10 +13,12 @@ let colorPlayer3;
 let colorPlayer4;
 let colorOkay = false;
 
-// TEST
-let matriks = [[[1,0,0],[1,0,1],[0,1,1]]];
-let matriks1 = [[50,1,1],[0,1,0],[1,0,0]];
-let res = matrixAddition(matriks, matriks1);
+let piecesJ1;
+let piecesJ2;
+let piecesJ3;
+let piecesJ4;
+
+let pieceSelected = 0;
 
 //big f*cking matrix (toutes les pièces modéliser sur des matrices 5x5) BFM[piece][ligne][carré]
 let BFM = [
@@ -44,11 +46,11 @@ let BFM = [
 [0,0,0,0,0],
 [0,0,0,0,0]
 ],
-[[0,0,0,0,0],
+[[0,0,1,0,0],
 [0,0,1,0,0],
 [0,0,1,0,0],
 [0,0,1,0,0],
-[0,0,1,0,0]
+[0,0,0,0,0]
 ],
 [[0,0,0,0,0],
 [0,0,1,0,0],
@@ -116,10 +118,10 @@ let BFM = [
  [0,0,1,0,0],
  [0,1,1,1,0]
 ],
-[[0,0,1,0,0],
+[[0,0,0,0,0],
+ [0,0,1,0,0],
  [0,0,1,0,0],
  [0,0,1,1,1],
- [0,0,0,0,0],
  [0,0,0,0,0]
 ],
 [[0,0,0,0,0],
@@ -147,6 +149,8 @@ let BFM = [
  [0,0,0,0,0]
 ]
 ];
+
+let tour = 1;
 /************** PRELOAD **************/
 
 function preload(){
@@ -156,40 +160,43 @@ function preload(){
 
 function setup(){
     createCanvas(1349,boardSize);
-    background(200,200,200);
-    initPieces(BFM);
     $("#J1").colorPick({
-       'initialColor': '#ff0000',
+       'initialColor': '#0000ff',
        'onColorSelected':function(){
             this.element.css('background-color',this.color);
             colorPlayer1 = this.color;
         }
     });
     $("#J2").colorPick({
-        'initialColor': '#00ff00',
+        'initialColor': '#ffff00',
         'onColorSelected':function(){
             this.element.css('background-color',this.color);
             colorPlayer2 = this.color;
         }
     });
     $("#J3").colorPick({
-        'initialColor': '#0000ff',
+        'initialColor': '#ff0000',
         'onColorSelected':function(){
             this.element.css('background-color',this.color);
             colorPlayer3 = this.color;
         }
     });
     $("#J4").colorPick({
-        'initialColor': '#ffff00',
+        'initialColor': '#00ff00',
         'onColorSelected':function(){
             this.element.css('background-color',this.color);
             colorPlayer4 = this.color;
         }
     });
+    piecesJ1 = BFM;
+    piecesJ2 = BFM;
+    piecesJ3 = BFM;
+    piecesJ4 = BFM;
 }
 
 /************** BOUCLE INFINIE **************/
 function draw(){
+    background(200,200,200);
     if(nbPlayer != 2 && nbPlayer != 4){ //check du nombre de joueurs, influe sur le plateau et les couleurs
         nbPlayer = floor(Number(window.prompt("Entrez le nombre de joueurs (2 ou 4)", 4)));
         window.alert("Selectionnez votre couleur pour chaque joueur puis validez");
@@ -200,14 +207,13 @@ function draw(){
         row = 14;
         w = (boardSize/col);
         cases = tableau2D(row, col);
+        delta = 0.55;                       //reduction du delta pour 2 joueurs (sinon pb affichage)
         stroke(0);
         noFill();        
         for(let j = 0; j < row; j++){     //dessin du plateau de jeu 2 joueurs
             for(let i = 0; i < col; i++){
                 cases[i][j] = [0];
                 square(j*w, i*w, w);
-                /*textSize(32);
-                text("1", j*w, i*w);*/
             }
         }
         fill(colorPlayer1);
@@ -216,6 +222,10 @@ function draw(){
         fill(colorPlayer2);
         square((col-1)*w,0,w);
         line((col-1)*w, 0, col*w, w);
+
+        if(colorOkay){
+            initPieces(BFM,colorPlayer1);
+        }
 
     }else{
         stroke(0);
@@ -244,6 +254,78 @@ function draw(){
         square((col-1)*w,(col-1)*w,w);
         line((col-1)*w, (col-1)*w, col*w, col*w);
 
+        if(colorOkay){
+            initPieces(BFM,colorPlayer1);
+        }
+        //selection de la piece lors du clic. TODO: factoriser !!! c'est degueulasse
+        if(mouseIsPressed){
+            if(mouseX>boardSize && mouseX<boardSize+5*(w*delta) && mouseY>0 && mouseY<5*(w*delta) && pieceSelected == 0){ //pièce 1x1
+                pieceSelected = 1;
+            }
+            if(mouseX>boardSize+5*(w*delta) && mouseX<boardSize+10*(w*delta) && mouseY>0 && mouseY<5*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 2;
+            }
+            if(mouseX>boardSize+10*(w*delta) && mouseX<boardSize+15*(w*delta) && mouseY>0 && mouseY<5*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 3;
+            }
+            if(mouseX>boardSize+15*(w*delta) && mouseX<boardSize+20*(w*delta) && mouseY>0 && mouseY<5*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 4;
+            }
+            if(mouseX>boardSize+20*(w*delta) && mouseX<boardSize+25*(w*delta) && mouseY>0 && mouseY<5*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 5;
+            }
+            if(mouseX>boardSize && mouseX<boardSize+5*(w*delta) && mouseY>5*(w*delta) && mouseY<10*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 6;
+            }
+            if(mouseX>boardSize+5*(w*delta) && mouseX<boardSize+10*(w*delta) && mouseY>5*(w*delta) && mouseY<10*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 7;
+            }
+            if(mouseX>boardSize+10*(w*delta) && mouseX<boardSize+15*(w*delta) && mouseY>5*(w*delta) && mouseY<10*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 8;
+            }
+            if(mouseX>boardSize+15*(w*delta) && mouseX<boardSize+20*(w*delta) && mouseY>5*(w*delta) && mouseY<10*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 9;
+            }
+            if(mouseX>boardSize+20*(w*delta) && mouseX<boardSize+25*(w*delta) && mouseY>5*(w*delta) && mouseY<10*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 10;
+            }
+            if(mouseX>boardSize && mouseX<boardSize+5*(w*delta) && mouseY>10*(w*delta) && mouseY<15*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 11;
+            }
+            if(mouseX>boardSize+5*(w*delta) && mouseX<boardSize+10*(w*delta) && mouseY>10*(w*delta) && mouseY<15*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 12;
+            }
+            if(mouseX>boardSize+10*(w*delta) && mouseX<boardSize+15*(w*delta) && mouseY>10*(w*delta) && mouseY<15*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 13;
+            }
+            if(mouseX>boardSize+15*(w*delta) && mouseX<boardSize+20*(w*delta) && mouseY>10*(w*delta) && mouseY<15*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 14;
+            }
+            if(mouseX>boardSize+20*(w*delta) && mouseX<boardSize+25*(w*delta) && mouseY>10*(w*delta) && mouseY<15*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 15;
+            }
+            if(mouseX>boardSize && mouseX<boardSize+5*(w*delta) && mouseY>15*(w*delta) && mouseY<20*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 16;
+            }
+            if(mouseX>boardSize+5*(w*delta) && mouseX<boardSize+10*(w*delta) && mouseY>15*(w*delta) && mouseY<20*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 17;
+            }
+            if(mouseX>boardSize+10*(w*delta) && mouseX<boardSize+15*(w*delta) && mouseY>15*(w*delta) && mouseY<20*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 18;
+            }
+            if(mouseX>boardSize+15*(w*delta) && mouseX<boardSize+20*(w*delta) && mouseY>15*(w*delta) && mouseY<20*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 19;
+            }
+            if(mouseX>boardSize+20*(w*delta) && mouseX<boardSize+25*(w*delta) && mouseY>15*(w*delta) && mouseY<20*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 20;
+            }
+            if(mouseX>boardSize && mouseX<boardSize+5*(w*delta) && mouseY>20*(w*delta) && mouseY<25*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 21;
+            }
+            if(pieceSelected){
+                selectPiece(pieceSelected-1, piecesJ1, colorPlayer1);
+            }
+        }
     }
 }
 
@@ -259,28 +341,31 @@ function tableau2D(rows, cols){
 }
 
 //une fois la couleur choisie, enleve les div permettant la selection des couleurs.
-function couleurChoisie(){
-    $("#J1").remove();
-    $("#J2").remove();
-    $("#J3").remove();
-    $("#container").remove();
-    $("#container").remove(); //Doublon pour régler le problème de suppression de div
-    colorOkay = true; //Tant que colorOkay est false, le jeu ne commence pas
-    initPieces(BFM);
+function validate(){
+    if(checkColor([colorPlayer1, colorPlayer2, colorPlayer3, colorPlayer4])){ //si les joueurs ont sélectionné des couleurs différentes on passe à la suite
+        $("#J1").remove();
+        $("#J2").remove();
+        $("#J3").remove();
+        $("#container").remove();
+        $("#container").remove(); //Doublon pour régler le problème de suppression de div
+        colorOkay = true; //Tant que colorOkay est false, le jeu ne commence pas
+    }else{ //si deux joueurs ont la meme couleur on les previens et on attend qu'ils refassent un choix
+        alert("Deux joueurs possèdent la même couleur, mettez-vous d'accord !");
+    }
 }
-
-//empeche d'avoir 2 fois la meme couleur #### NON UTILISE POUR L'INSTANT ####
-function checkColor(call){
-    let list = [colorPlayer1, colorPlayer2, colorPlayer3, colorPlayer4];
-    let count = 0;
-    for(i=0; i<4; i++){
-        if(list[i] == call){
-            count++;
-        }
+let testUnique;
+//empeche d'avoir 2 fois la meme couleur
+function checkColor(liste){
+    testUnique = doublon(liste);
+    if(testUnique.length != 4){
+        return false;
     }
-    if(count != 1){
-        alert("un autre joueur possède déjà cette couleur, mettez vous d'accord");
-    }
+    return true;
+}
+function doublon(array){
+    return $.grep(array,function(el,index){
+        return index == $.inArray(el,array);
+    });
 }
 
 //permet d'additionner 2 matrices
@@ -293,36 +378,68 @@ function matrixAddition(a, b) {
 }
 
 //initialise l'affichage de toutes les pièces
-function initPieces(matrice){
-    translate(boardSize,0);
-    let dim = w*delta;
+function initPieces(matrice, color){
+    translate(boardSize,0); //on se deplace vers la doite afin de dessiner les pièces a cote du plateau
+    let dim = w*delta; //réduction de la taille des pièces par rapport à la taille des cases (opti de la place)
     for(x=0;x<matrice.length;x++){
         push();
         for(y=0; y<matrice[x].length; y++){
             push();
             for(z=0;z<matrice[x][y].length; z++){
                 if(matrice[x][y][z]){
-                    fill(255);
+                    fill(color);
                     stroke(0);
                     square(0, 0, dim);
-                }/*else{
+                }
+                /*else{ //decommenter pour test
                     fill(255,0,0);
                     square(0,0,dim);
                 }*/
-                translate(dim,0);
+                translate(dim,0); //deplacement en x après chaque dessin d'un carre d'une piece
             }
             pop();
-            translate(0,dim);
+            translate(0,dim); //deplacement en y apres la fin d'une ligne d'une piece (matrice 5x5)
         }
         pop();
-        if(x == 3 || x == 7 || x == 11 || x == 15 || x == 19){
-            translate(-20*dim,5*dim);
+        if(x == 4 || x == 9 || x == 14 || x == 19){
+            translate(-25*dim,5*dim); //retour à la ligne après affichage de 5 pièces
         }
         translate(5*dim,0);
     }    
 
 }
 
-function drawPieces(matrice){
+function selectPiece(pieceId, matrice, color){
+    let piece = matrice[pieceId];
+    //print(piece);
+    resetMatrix();
+    translate(-2.5*w,-2.5*w);
+    for(x=0; x<piece.length; x++){
+        push();
+        //rectMode(CENTER);
+        for(y=0;y<piece[x].length; y++){
+            if(piece[x][y] && x == 2 && y == 2){
+                fill(color);
+                stroke(0);
+                square(mouseX, mouseY, w);
+            }else if(piece[x][y]){
+                fill(color);
+                stroke(0);
+                square(mouseX, mouseY, w);
+            }
+            /*else{ //decommenter pour test
+                fill(255,0,0);
+                square(mouseX,mouseY,w);
+            }*/
+            translate(w,0); //deplacement en x après chaque dessin d'un carre d'une piece
+        }
+        pop();
+        translate(0,w); //deplacement en y apres la fin d'une ligne d'une piece (matrice 5x5)
+    }
+}
 
+// deselectionne la piece une fois le clic relache
+function mouseReleased(){
+    pieceSelected = 0;
+    // TODO: verif possibilite du move
 }
