@@ -2,6 +2,7 @@
 
 let col = 20;
 let row = 20;
+let cases;
 let boardSize = 650;
 let w;
 let delta = 0.8;
@@ -206,13 +207,11 @@ function draw(){
         col = 14;
         row = 14;
         w = (boardSize/col);
-        cases = tableau2D(row, col);
-        delta = 0.55;                       //reduction du delta pour 2 joueurs (sinon pb affichage)
+        delta = 0.55;                       //reduction de la taille des piece pour 2 joueurs (sinon pb affichage)
         stroke(0);
         noFill();        
         for(let j = 0; j < row; j++){     //dessin du plateau de jeu 2 joueurs
             for(let i = 0; i < col; i++){
-                cases[i][j] = [0];
                 square(j*w, i*w, w);
             }
         }
@@ -231,10 +230,8 @@ function draw(){
         stroke(0);
         noFill();
         w = boardSize/col;
-        cases = tableau2D(row, col);
         for(let j = 0; j < row; j++){     //dessin du plateau de jeu 4 joueurs
             for(let i = 0; i < col; i++){
-                cases[i][j] = [0];
                 square(j*w, i*w, w);
             }
         }
@@ -349,6 +346,12 @@ function validate(){
         $("#container").remove();
         $("#container").remove(); //Doublon pour régler le problème de suppression de div
         colorOkay = true; //Tant que colorOkay est false, le jeu ne commence pas
+        cases = tableau2D(row, col);
+        for(let j = 0; j < row; j++){     //dessin du plateau de jeu 2 joueurs
+            for(let i = 0; i < col; i++){
+                cases[j][i] = 0;
+            }
+        }
     }else{ //si deux joueurs ont la meme couleur on les previens et on attend qu'ils refassent un choix
         alert("Deux joueurs possèdent la même couleur, mettez-vous d'accord !");
     }
@@ -440,6 +443,80 @@ function selectPiece(pieceId, matrice, color){
 
 // deselectionne la piece une fois le clic relache
 function mouseReleased(){
-    pieceSelected = 0;
     // TODO: verif possibilite du move
+    if(mouseX>0 && mouseX<boardSize && mouseY>0 && mouseY<boardSize){
+        checkMove(mouseX, mouseY, pieceSelected);
+    }
+    pieceSelected = 0;
+}
+
+function keyPressed(){
+    if(pieceSelected){
+        if(keyCode === RIGHT_ARROW){
+            print('right');
+            rotation(piecesJ1[pieceSelected-1], 1);
+        }
+        else if(keyCode === LEFT_ARROW){
+            print('left');
+            rotation(piecesJ1[pieceSelected-1], 2);
+        }
+        else if (keyCode === UP_ARROW){
+            print("flip");
+            rotation(piecesJ1[pieceSelected-1], 3);
+        }
+    }
+}
+
+function rotation(piece, angle){
+    // Copy the original matrix
+    var origMatrix = piece.slice();
+    if(angle === 1){
+        for(var i=0; i < piece.length; i++) {
+            // Map each row entry to its rotated value
+            var row = piece[i].map(function(x, j) {
+                var k = (piece.length - 1) - j;
+                return origMatrix[k][i];
+            });
+            piece[i] = row;
+        }
+        return piece;
+    }
+    else if(angle === 2){
+        let N = piece[0].length;
+        let temp;
+        // Consider all squares one by one 
+        for(x=0; x<N/2; x++){         
+            // Consider elements in group    
+            // of 4 in current square 
+            for(y=x; y<N-x-1; y++){
+                // store current cell in temp variable 
+                temp = piece[x][y];
+                // move values from right to top 
+                piece[x][y] = piece[y][N-1-x];
+                // move values from bottom to right 
+                piece[y][N-1-x] = piece[N-1-x][N-1-y]; 
+                // move values from left to bottom 
+                piece[N-1-x][N-1-y] = piece[N-1-y][x];
+                // assign temp to left 
+                piece[N-1-y][x] = temp;
+            }
+        }
+    }
+    else if(angle === 3){
+        for(var i=0; i < piece.length; i++) {
+            // Map each row entry to its rotated value
+            var row = piece[i].map(function(x, j) {
+                var k = (piece.length - 1) - j;
+                return origMatrix[k][i];
+            });
+            piece[piece.length-(i+1)] = row;
+        }
+        return piece;
+    }
+}
+
+//verifie que la piece peut etre posee a cet endroit
+function checkMove(posX, posY, piece){
+    print(posX, posY, piece); //OK
+
 }
