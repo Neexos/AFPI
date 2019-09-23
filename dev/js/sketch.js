@@ -19,6 +19,8 @@ let piecesJ2;
 let piecesJ3;
 let piecesJ4;
 
+let currPlayerMatrix;
+
 let pieceSelected = 0;
 
 //big f*cking matrix (toutes les pièces modéliser sur des matrices 5x5) BFM[piece][ligne][carré]
@@ -155,7 +157,10 @@ let tour = 1;
 /************** PRELOAD **************/
 
 function preload(){
-
+    piecesJ1 = BFM;
+    piecesJ2 = BFM;
+    piecesJ3 = BFM;
+    piecesJ4 = BFM;
 }
 /************** SETUP **************/
 
@@ -189,10 +194,6 @@ function setup(){
             colorPlayer4 = this.color;
         }
     });
-    piecesJ1 = BFM;
-    piecesJ2 = BFM;
-    piecesJ3 = BFM;
-    piecesJ4 = BFM;
 }
 
 /************** BOUCLE INFINIE **************/
@@ -225,7 +226,74 @@ function draw(){
         if(colorOkay){
             initPieces(BFM,colorPlayer1);
         }
-
+        if(mouseIsPressed){
+            if(mouseX>boardSize && mouseX<boardSize+5*(w*delta) && mouseY>0 && mouseY<5*(w*delta) && pieceSelected == 0){ //pièce 1x1
+                pieceSelected = 1;
+            }
+            if(mouseX>boardSize+5*(w*delta) && mouseX<boardSize+10*(w*delta) && mouseY>0 && mouseY<5*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 2;
+            }
+            if(mouseX>boardSize+10*(w*delta) && mouseX<boardSize+15*(w*delta) && mouseY>0 && mouseY<5*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 3;
+            }
+            if(mouseX>boardSize+15*(w*delta) && mouseX<boardSize+20*(w*delta) && mouseY>0 && mouseY<5*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 4;
+            }
+            if(mouseX>boardSize+20*(w*delta) && mouseX<boardSize+25*(w*delta) && mouseY>0 && mouseY<5*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 5;
+            }
+            if(mouseX>boardSize && mouseX<boardSize+5*(w*delta) && mouseY>5*(w*delta) && mouseY<10*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 6;
+            }
+            if(mouseX>boardSize+5*(w*delta) && mouseX<boardSize+10*(w*delta) && mouseY>5*(w*delta) && mouseY<10*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 7;
+            }
+            if(mouseX>boardSize+10*(w*delta) && mouseX<boardSize+15*(w*delta) && mouseY>5*(w*delta) && mouseY<10*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 8;
+            }
+            if(mouseX>boardSize+15*(w*delta) && mouseX<boardSize+20*(w*delta) && mouseY>5*(w*delta) && mouseY<10*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 9;
+            }
+            if(mouseX>boardSize+20*(w*delta) && mouseX<boardSize+25*(w*delta) && mouseY>5*(w*delta) && mouseY<10*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 10;
+            }
+            if(mouseX>boardSize && mouseX<boardSize+5*(w*delta) && mouseY>10*(w*delta) && mouseY<15*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 11;
+            }
+            if(mouseX>boardSize+5*(w*delta) && mouseX<boardSize+10*(w*delta) && mouseY>10*(w*delta) && mouseY<15*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 12;
+            }
+            if(mouseX>boardSize+10*(w*delta) && mouseX<boardSize+15*(w*delta) && mouseY>10*(w*delta) && mouseY<15*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 13;
+            }
+            if(mouseX>boardSize+15*(w*delta) && mouseX<boardSize+20*(w*delta) && mouseY>10*(w*delta) && mouseY<15*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 14;
+            }
+            if(mouseX>boardSize+20*(w*delta) && mouseX<boardSize+25*(w*delta) && mouseY>10*(w*delta) && mouseY<15*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 15;
+            }
+            if(mouseX>boardSize && mouseX<boardSize+5*(w*delta) && mouseY>15*(w*delta) && mouseY<20*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 16;
+            }
+            if(mouseX>boardSize+5*(w*delta) && mouseX<boardSize+10*(w*delta) && mouseY>15*(w*delta) && mouseY<20*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 17;
+            }
+            if(mouseX>boardSize+10*(w*delta) && mouseX<boardSize+15*(w*delta) && mouseY>15*(w*delta) && mouseY<20*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 18;
+            }
+            if(mouseX>boardSize+15*(w*delta) && mouseX<boardSize+20*(w*delta) && mouseY>15*(w*delta) && mouseY<20*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 19;
+            }
+            if(mouseX>boardSize+20*(w*delta) && mouseX<boardSize+25*(w*delta) && mouseY>15*(w*delta) && mouseY<20*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 20;
+            }
+            if(mouseX>boardSize && mouseX<boardSize+5*(w*delta) && mouseY>20*(w*delta) && mouseY<25*(w*delta) && pieceSelected == 0){ 
+                pieceSelected = 21;
+            }
+            if(pieceSelected){
+                selectPiece(pieceSelected-1, piecesJ1, colorPlayer1);
+            }
+        }
     }else{
         stroke(0);
         noFill();
@@ -254,7 +322,8 @@ function draw(){
         if(colorOkay){
             initPieces(BFM,colorPlayer1);
         }
-        //selection de la piece lors du clic. TODO: factoriser !!! c'est degueulasse
+        //selection de la piece lors du clic. 
+        //TODO: factoriser !!! c'est degueulasse
         if(mouseIsPressed){
             if(mouseX>boardSize && mouseX<boardSize+5*(w*delta) && mouseY>0 && mouseY<5*(w*delta) && pieceSelected == 0){ //pièce 1x1
                 pieceSelected = 1;
@@ -356,8 +425,9 @@ function validate(){
         alert("Deux joueurs possèdent la même couleur, mettez-vous d'accord !");
     }
 }
-let testUnique;
+
 //empeche d'avoir 2 fois la meme couleur
+let testUnique;
 function checkColor(liste){
     testUnique = doublon(liste);
     if(testUnique.length != 4){
@@ -414,12 +484,10 @@ function initPieces(matrice, color){
 
 function selectPiece(pieceId, matrice, color){
     let piece = matrice[pieceId];
-    //print(piece);
     resetMatrix();
     translate(-2.5*w,-2.5*w);
     for(x=0; x<piece.length; x++){
         push();
-        //rectMode(CENTER);
         for(y=0;y<piece[x].length; y++){
             if(piece[x][y] && x == 2 && y == 2){
                 fill(color);
@@ -430,10 +498,10 @@ function selectPiece(pieceId, matrice, color){
                 stroke(0);
                 square(mouseX, mouseY, w);
             }
-            /*else{ //decommenter pour test
+            else{ //decommenter pour test
                 fill(255,0,0);
                 square(mouseX,mouseY,w);
-            }*/
+            }
             translate(w,0); //deplacement en x après chaque dessin d'un carre d'une piece
         }
         pop();
@@ -444,35 +512,36 @@ function selectPiece(pieceId, matrice, color){
 // deselectionne la piece une fois le clic relache
 function mouseReleased(){
     // TODO: verif possibilite du move
-    if(mouseX>0 && mouseX<boardSize && mouseY>0 && mouseY<boardSize){
+    if(mouseX>0 && mouseX<boardSize && mouseY>0 && mouseY<boardSize && pieceSelected){
         checkMove(mouseX, mouseY, pieceSelected);
     }
     pieceSelected = 0;
 }
-
+// selon la touche pressee, fais tourner la piece dans un sens donne
 function keyPressed(){
     if(pieceSelected){
         if(keyCode === RIGHT_ARROW){
-            print('right');
             rotation(piecesJ1[pieceSelected-1], 1);
         }
         else if(keyCode === LEFT_ARROW){
-            print('left');
             rotation(piecesJ1[pieceSelected-1], 2);
         }
-        else if (keyCode === UP_ARROW){
-            print("flip");
+        else if (keyCode === UP_ARROW || keyCode === DOWN_ARROW){
             rotation(piecesJ1[pieceSelected-1], 3);
         }
     }
+    if(key === "h"){
+        alert("Résumé des commandes:\n\t- Restez appuyé ");
+    }
 }
 
+// tourne la piece dans un sens defini
 function rotation(piece, angle){
-    // Copy the original matrix
+    // Copie de la matrice originale
     var origMatrix = piece.slice();
     if(angle === 1){
         for(var i=0; i < piece.length; i++) {
-            // Map each row entry to its rotated value
+            // Map chaque ligne a sa valeur tournee de 90°
             var row = piece[i].map(function(x, j) {
                 var k = (piece.length - 1) - j;
                 return origMatrix[k][i];
@@ -483,13 +552,9 @@ function rotation(piece, angle){
     }
     else if(angle === 2){
         let N = piece[0].length;
-        let temp;
-        // Consider all squares one by one 
+        let temp; 
         for(x=0; x<N/2; x++){         
-            // Consider elements in group    
-            // of 4 in current square 
             for(y=x; y<N-x-1; y++){
-                // store current cell in temp variable 
                 temp = piece[x][y];
                 // move values from right to top 
                 piece[x][y] = piece[y][N-1-x];
@@ -504,7 +569,7 @@ function rotation(piece, angle){
     }
     else if(angle === 3){
         for(var i=0; i < piece.length; i++) {
-            // Map each row entry to its rotated value
+            // Map chaque ligne a sa valeur tournee de 90°
             var row = piece[i].map(function(x, j) {
                 var k = (piece.length - 1) - j;
                 return origMatrix[k][i];
@@ -518,5 +583,21 @@ function rotation(piece, angle){
 //verifie que la piece peut etre posee a cet endroit
 function checkMove(posX, posY, piece){
     print(posX, posY, piece); //OK
-
+    let coord = getCase(posX, posY);
+    if(cases[coord[1]][coord[0]]){ //cases[x][y] = 0 si libre, 1 si J1, 2 si J2 etc.
+        alert("T'es con ou quoi ? Tu vois pas qu'il y a déjà une pièce ?");
+    }else{
+        print('la case est libre');
+        for(x=0; x< BFM[piece-1].length; x++){
+            for(y=0;y< BFM[piece-1][x].length; y++){
+                if( BFM[piece-1][x][y] === 1){
+                    print(x,y);
+                }
+            }
+        }
+    }
+}
+//retourne les coordonnees de la case sur laquelle la piece est relachee
+function getCase(x, y){
+    return [floor(x/w), floor(y/w)];
 }
