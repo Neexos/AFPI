@@ -223,7 +223,7 @@ function draw(){
         square((col-1)*w,0,w);
         line((col-1)*w, 0, col*w, w);
 
-        if(colorOkay){
+        /*if(colorOkay){
             initPieces(BFM,colorPlayer1);
         }
         if(mouseIsPressed){
@@ -293,7 +293,7 @@ function draw(){
             if(pieceSelected){
                 selectPiece(pieceSelected-1, piecesJ1, colorPlayer1);
             }
-        }
+        }*/
     }else{
         stroke(0);
         noFill();
@@ -318,7 +318,7 @@ function draw(){
         fill(colorPlayer4);
         square((col-1)*w,(col-1)*w,w);
         line((col-1)*w, (col-1)*w, col*w, col*w);
-
+	/*
         if(colorOkay){
             initPieces(BFM,colorPlayer1);
         }
@@ -391,7 +391,7 @@ function draw(){
             if(pieceSelected){
                 selectPiece(pieceSelected-1, piecesJ1, colorPlayer1);
             }
-        }
+        }*/
     }
 }
 
